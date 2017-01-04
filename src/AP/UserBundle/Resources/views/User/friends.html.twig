@@ -1,0 +1,35 @@
+{% extends "APUserBundle::layout.html.twig" %}
+
+{% block title %}
+  Edit - {{ parent() }}
+{% endblock %}
+
+{% block fos_user_content %}
+
+
+  <p>
+    Liste des animaux de mon enclos
+  </p>
+{% for friend in friends %}
+  <div class="well">
+    
+      <p>
+        <ul>
+          <li>Username : {{ friend.username }}</li>
+          <li>Email : {{ friend.email }}</li>
+          <li>Race : {{ friend.race }}</li>
+          <li>Nourriture : {{ friend.nourriture }}</li>
+        </ul> 
+      </p>
+    
+  </div>
+
+  <a href="{{ path('ap_user_removeFriend', {'id': friend.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer de mon enclos
+    </a>
+
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,4 @@
+ap_core_homepage:
+    path:     /
+    defaults: 
+        _controller: APCoreBundle:Core:index

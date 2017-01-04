@@ -1,0 +1,25 @@
+ap_user_edit:
+    path:      /edit/{id}
+    defaults: 
+        _controller: APUserBundle:User:edit
+    requirements:
+        id:   \d+
+
+ap_user_friend:
+    path:     /addFriend/{id}
+    defaults:
+        _controller: APUserBundle:User:addFriend
+    requirements:
+        id:   \d+
+
+ap_user_friends:
+    path:     /showFriends
+    defaults:
+        _controller: APUserBundle:User:showFriends
+
+ap_user_removeFriend:
+    path:     /removeFriend/{id}
+    defaults:
+        _controller: APUserBundle:User:removeFriend
+    requirements:
+        id:   \d+
