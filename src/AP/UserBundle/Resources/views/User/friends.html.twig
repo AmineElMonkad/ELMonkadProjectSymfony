@@ -10,26 +10,78 @@
   <p>
     Liste des animaux de mon enclos
   </p>
-{% for friend in friends %}
-  <div class="well">
+  
+  <form>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+        <input type="text" class="form-control" placeholder="Search da Fish" ng-model="searchText">
+      </div>      
+    </div>
+  </form>
+  <table class="table">
+    <tr>
+      <th ng-click="sortData('username')">Username <div ng-class="getSortClass('username')"></div></th>
+      <th ng-click="sortData('email')">Email <div ng-class="getSortClass('email')"></div></th>
+      <th ng-click="sortData('race')">Race <div ng-class="getSortClass('race')"></div></th>
+      <th ng-click="sortData('nourriture')">Nourriture <div ng-class="getSortClass('nourriture')"></div></th>
+    </tr>
+    <tr ng-repeat="x in friends | orderBy : sortColumn : reverseSort | filter:searchText">
+      <td class="hidden">{{ '{{ x.id }}' }}</td>
+      <td>{{ '{{ x.username }}' }}</td>
+      <td>{{ '{{ x.email }}' }}</td>
+      <td>{{ '{{ x.race }}' }}</td>
+      <td>{{ '{{ x.nourriture }}' }}</td>
+      <td  data-ng-click="alertFunction(x)"><div ><button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i>
+      Supprimer de mon enclos</button></div>
+      
+    </a></td>
+    </tr>
+  </table>
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="../public/js/angular.js"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+<script>
+var app = angular.module('myApp', []);
+app.controller('orderCtrl', function($scope) {
+
+    var friends = [ {% for friend in friends %} {"id" : "{{ friend.id }}", "username" : "{{ friend.username }}", "email" : "{{ friend.email }}", "race" : "{{ friend.race }}", "nourriture" : "{{ friend.nourriture }}"},{% endfor %} ];
+
+    $scope.friends = friends;
+    $scope.sortColumn = "username";
+    $scope.reverseSort = false;
+    $scope.searchFish   = '';
+
+    $scope.sortData = function (column) {
+      $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+      $scope.sortColumn = column;
+    }
+
+    $scope.getSortClass = function (column) {
+      if($scope.sortColumn == column) {
+        return $scope.reverseSort ? 'glyphicon glyphicon-chevron-down' : 'glyphicon glyphicon-chevron-up';
+      }
+    }
+
+    $scope.alertFunction = function(element) { 
+
+             $.get(Routing.generate('ap_user_removeFriend', {'id': element.id}, true));
+             location.reload();
+        }
+
+
+    return '';
     
-      <p>
-        <ul>
-          <li>Username : {{ friend.username }}</li>
-          <li>Email : {{ friend.email }}</li>
-          <li>Race : {{ friend.race }}</li>
-          <li>Nourriture : {{ friend.nourriture }}</li>
-        </ul> 
-      </p>
-    
-  </div>
 
-  <a href="{{ path('ap_user_removeFriend', {'id': friend.id}) }}" class="btn btn-danger">
-      <i class="glyphicon glyphicon-trash"></i>
-      Supprimer de mon enclos
-    </a>
+});
 
-{% endfor %}
-
+</script>
 
 {% endblock %}

@@ -54,7 +54,7 @@ class UserController extends Controller
 
 		$em->flush();
 
-		return $this->redirectToRoute('ap_user_friends');
+		return $this->redirectToRoute('ap_core_homepage');
 
 	}
 

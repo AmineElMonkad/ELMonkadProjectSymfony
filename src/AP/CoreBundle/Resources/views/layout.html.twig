@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="orderCtrl">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% block title %}AnimalBook{% endblock %}</title>
+    <title>{% block title %}AnimalBook{% endblock %}</title>  
 
     {% block stylesheets %}
       {# On charge le CSS de bootstrap depuis le site directement #}
@@ -46,7 +46,7 @@
       <div id="menu" class="col-md-3">
         <h3>Menu</h3>
         <div class="list-group">
-            <a href="{{ path('ap_core_homepage') }}" class="list-group-item">Accueil</a>
+            <a href="{{ path('ap_core_homepage')}}" class="list-group-item">Accueil</a>
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                 <a href="{{ path('fos_user_profile_show') }}" class="list-group-item">Afficher Profile</a></li>
                 <a href="{{ path('fos_user_profile_edit') }}" class="list-group-item">Modifier Profile</a></li>
@@ -63,7 +63,7 @@
     <hr>
 
     <footer>
-      <p>The sky's the limit © {{ 'now'|date('Y') }} and beyond.</p>
+      <p>Realised By <strong>El Monkad Mohammed Amine</strong> © {{ 'now'|date('Y') }} </p>
     </footer>
   </div>
 
@@ -71,6 +71,8 @@
     {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    
   {% endblock %}
 
   </body>

@@ -14,22 +14,90 @@
     <div class="alert alert-info">Message flash : {{ message }}</div>
   {% endfor %}
 
-
+  	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
     <p>Bienvenue dans notre site Voici la liste de tous le animaux : </p>
+	{% else %}
+		<p>Veuillez se connecter pour bénificier de notre service</p>
+	{% endif %}
 
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-	
+	{% set a = 0 %}
+	<table class="table">
+		<tr>
+			<th>Username</th>
+			<th>Email</th>
+			<th>Race</th>
+			<th>Nourriture</th>
+		</tr>
+
 	{% for user in users %}
-		
 	  		{% if user.id != app.user.id %}
-	  					<div class="well">
-	  						Username : {{ user.username }}, Race :  {{user.race}} <a href="{{ path('ap_user_friend', {'id': user.id}) }}" class="btn btn-success">Ajouter à mon enclos</a>
-	  					</div>
-	  			
+	  			{% for friend in app.user.friends%}
+	  				{% if friend.id == user.id %}
+	  					{% set a = a + 1 %}
+	  				{% endif %}
+	  			{% endfor %}
+
+	  			{% if a == 0 %}
+  					<tr>
+  						<td>{{ user.username }}</td>
+  						<td>{{user.email}}</td>
+  						<td>{{user.race}}</td>
+  						<td>{{user.nourriture}}</td>
+  						<td><a href="{{ path('ap_user_friend', {'id': user.id}) }}" class="btn btn-success"> <i class="glyphicon glyphicon-plus"></i> Ajouter à mon enclos</a></td>
+  					</tr>	
+				{% endif %}		
+	  			{% set a = 0 %}
 	  		{% endif %}
-  		
+
     {% endfor %}
+
+</table>
+
+{% block fos_user_content %}
+{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock fos_user_content %}
+
+  
 
 {% endif %}
 
 {% endblock %}
+
+{% block javascripts %}
+
+	{{ parent() }}
+  <script>
+      $("#autoEmail").change(function () {
+      	console.log("hhaha");
+        {% for user in users %}
+          if ($("#autoEmail").val() == '{{user.email}}') 
+          {
+          	$("#idAnim").val("{{user.id}}")
+            $("#autoUsername").val("{{user.Username}}");
+            $("#autoAge").val("{{user.age}}");
+            $("#autoFamille").val("{{user.famille}}");
+            $("#autoRace").val("{{user.race}}");
+            $("#autoNourriture").val("{{user.nourriture}}");
+            $("#fos_user_registration_form_plainPassword_first").val("bjkbkjjhh");
+            $("#autoUsername" ).prop( "disabled", true );
+            $("#autoAge" ).prop( "disabled", true );
+            $("#autoFamille" ).prop( "disabled", true );
+            $("#autoRace" ).prop( "disabled", true );
+            $("#autoNourriture" ).prop( "disabled", true );
+
+            $("#sub").css('display', 'none');
+            $("#sub1").css('display', 'block');
+            $('form').get(0).setAttribute('action', "{{ path('ap_user_friend', {'id': user.id} )}}");
+            $("#fos_user_registration_form_plainPassword_second").css('display', 'none').removeAttr('required');
+            $("label[for='fos_user_registration_form_plainPassword_second']").css('display', 'none');
+            
+
+          }
+
+        {% endfor %}
+      });
+  </script>
+
+  {% endblock %}
+

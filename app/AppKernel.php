@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new AP\CoreBundle\APCoreBundle(),
             new AP\UserBundle\APUserBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
